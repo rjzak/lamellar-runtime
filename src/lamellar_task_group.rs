@@ -1159,16 +1159,6 @@ impl LamellarAM for AmGroupAm {
 }
 
 impl LamellarSerde for AmGroupAm {
-    fn serialized_size(&self) -> usize {
-        let mut size = 0;
-        size += crate::serialized_size(&0usize, true);
-        let id_size = crate::serialized_size(&AM_ID_START, true);
-        for am in &self.ams[self.si..self.ei] {
-            size += id_size;
-            size += am.serialized_size();
-        }
-        size
-    }
     fn serialize_into(&self, buf: &mut [u8]) {
         let mut i = 0;
         // let timer = std::time::Instant::now();
@@ -1185,10 +1175,10 @@ impl LamellarSerde for AmGroupAm {
         // println!("serialize time: {:?} elem cnt {:?} ({}-{})", timer.elapsed().as_secs_f64(),self.ei-self.si,self.ei,self.si);
     }
     fn serialize(&self) -> Vec<u8> {
-        let ser_size = self.serialized_size();
-        let mut data = vec![0; ser_size];
-        self.serialize_into(&mut data);
-        data
+        //let ser_size = self.serialized_size();
+        //let mut data = vec![0; ser_size];
+        //self.serialize_into(&mut data);
+        crate::serialize(&self, true).unwrap()
     }
 }
 
@@ -1293,9 +1283,6 @@ struct AmGroupAmReturn {
 }
 
 impl LamellarSerde for AmGroupAmReturn {
-    fn serialized_size(&self) -> usize {
-        crate::serialized_size(&self.val, true)
-    }
     fn serialize_into(&self, buf: &mut [u8]) {
         crate::serialize_into(buf, &self.val, true).unwrap();
     }

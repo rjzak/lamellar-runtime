@@ -766,14 +766,12 @@ impl<T> DarcSerde for &T {
 
 #[doc(hidden)]
 pub trait LamellarSerde: SyncSend {
-    fn serialized_size(&self) -> usize;
     fn serialize_into(&self, buf: &mut [u8]);
     fn serialize(&self) -> Vec<u8>;
 }
 
 #[doc(hidden)]
 pub trait LamellarResultSerde: LamellarSerde {
-    fn serialized_result_size(&self, result: &LamellarAny) -> usize;
     fn serialize_result_into(&self, buf: &mut [u8], result: &LamellarAny);
 }
 

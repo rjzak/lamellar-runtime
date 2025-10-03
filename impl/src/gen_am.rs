@@ -70,9 +70,6 @@ pub(crate) fn impl_lamellar_serde_trait(
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
     quote! {
         impl #impl_generics #lamellar::active_messaging::LamellarSerde for #am_name #ty_generics #where_clause {
-            fn serialized_size(&self)->usize{
-                #lamellar::serialized_size(self,true)
-            }
             fn serialize_into(&self,buf: &mut [u8]){
                 #lamellar::serialize_into(buf,self,true).expect("can serialize and enough space in buf");
             }
@@ -91,9 +88,6 @@ fn impl_return_lamellar_serde_trait(
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
     quote! {
         impl #impl_generics #lamellar::active_messaging::LamellarSerde for #am_name #ty_generics #where_clause {
-            fn serialized_size(&self)->usize{
-                #lamellar::serialized_size(&self.val,true)
-            }
             fn serialize_into(&self,buf: &mut [u8]){
                 #lamellar::serialize_into(buf,&self.val,true).expect("can serialize and enough space in buf");
             }
@@ -113,10 +107,6 @@ pub(crate) fn impl_lamellar_result_serde_trait(
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
     quote! {
         impl #impl_generics #lamellar::active_messaging::LamellarResultSerde for #am_name #ty_generics #where_clause {
-            fn serialized_result_size(&self,result: & Box<dyn std::any::Any + Sync + Send>)->usize{
-                let result  = result.downcast_ref::<#ret_type>().expect("can downcast result box");
-                #lamellar::serialized_size(result,true)
-            }
             fn serialize_result_into(&self,buf: &mut [u8],result: & Box<dyn std::any::Any + Sync + Send>){
                 let result  = result.downcast_ref::<#ret_type>().expect("can downcast result box");
                 #lamellar::serialize_into(buf,result,true).expect("can serialize and enough size in buf");

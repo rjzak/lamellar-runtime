@@ -12,12 +12,13 @@ const MAX_BATCH_SIZE: usize = 1_000_000;
 
 lazy_static! {
     static ref BATCH_HEADER_LEN: usize =
-        crate::serialized_size::<BatchHeader>(&Default::default(), false);
+        crate::serialize::<BatchHeader>(&Default::default(), false).unwrap().len();
     static ref TEAM_HEADER_LEN: usize =
-        crate::serialized_size::<TeamHeader>(&Default::default(), false);
+        crate::serialize::<TeamHeader>(&Default::default(), false).unwrap().len();
     static ref BATCHED_AM_HEADER_LEN: usize =
-        crate::serialized_size::<BatchedAmHeader>(&Default::default(), false);
-    static ref REQ_ID_LEN: usize = crate::serialized_size::<ReqId>(&Default::default(), false);
+        crate::serialize::<BatchedAmHeader>(&Default::default(), false).unwrap().len();
+    static ref REQ_ID_LEN: usize =
+        crate::serialize::<ReqId>(&Default::default(), false).unwrap().len();
 }
 
 type TeamId = usize;

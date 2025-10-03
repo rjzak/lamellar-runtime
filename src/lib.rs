@@ -352,26 +352,6 @@ where
     res
 }
 
-/// Wrapper function for getting the size of serialized data
-pub fn serialized_size<T: ?Sized>(obj: &T, var: bool) -> usize
-where
-    T: serde::Serialize,
-{
-    // let start = std::time::Instant::now();
-    let res = if var {
-        // BINCODE.serialized_size(obj).unwrap() as usize
-        bincode::serde::encode_to_vec(obj, *BINCODE).unwrap().len()
-    } else {
-        bincode::serde::encode_to_vec(obj, *BINCODE).unwrap().len()
-    };
-    // unsafe {
-    //     SERIALIZE_SIZE_TIMER
-    //         .get_or(|| Arc::new(AtomicUsize::new(0)))
-    //         .fetch_add(start.elapsed().as_micros() as usize, SeqCst);
-    // }
-    res
-}
-
 /// Wrapper function for serializing an object into a buffer
 pub fn serialize_into<T: ?Sized>(buf: &mut [u8], obj: &T, var: bool) -> Result<(), anyhow::Error>
 where
